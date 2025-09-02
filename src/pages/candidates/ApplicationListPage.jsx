@@ -10,11 +10,11 @@ const dummyApplicants = [
   {
     id: 1,
     jobTitle: 'Frontend Developer',
-    name: 'Ayushi Gupta',
-    email: 'ayushi@example.com',
+    name: 'manisha sah',
+    email: 'manisha@example.com',
     contact: '7078596818',
     status: 'Pending',
-    resume: 'https://example.com/resume-ayushi.pdf',
+    resume: 'https://example.com/resume-manisha.pdf',
   },
   {
     id: 2,
@@ -42,6 +42,24 @@ const dummyApplicants = [
     contact: '9876543210',
     status: 'Pending',
     resume: 'https://example.com/resume-amit.pdf',
+  },
+  {
+    id: 5,
+    jobTitle: 'Data Scientist',
+    name: 'Priya Singh',
+    email: 'priya@example.com/resume-priya.pdf',
+    contact: '9123456780',
+    status: 'Reviewed',
+    resume: 'https://example.com/resume-priya.pdf',
+  },
+  {
+    id: 6,
+    jobTitle: 'DevOps Engineer',
+    name: 'Vikram Rao',
+    email: 'vikrram@gmail.com',
+    contact: '9234567890',
+    status: 'Pending',
+    resume: 'https://example.com/resume-vikram.pdf',
   },
 ];
 

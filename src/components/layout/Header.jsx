@@ -160,6 +160,7 @@ const Header = ({ handleDrawerToggle, isMobile }) => {
               sx={{ p: 0.5 }}
             >
               <Avatar
+              src={user?.photo || ''} 
                 sx={{
                   width: 40,
                   height: 40,
@@ -168,13 +169,13 @@ const Header = ({ handleDrawerToggle, isMobile }) => {
                   fontWeight: 'bold'
                 }}
               >
-                {user?.name?.charAt(0)?.toUpperCase()}
+                {!user?.photo && user?.fullName?.charAt(0)?.toUpperCase()}
               </Avatar>
             </IconButton>
 
             <Box sx={{ ml: 1, display: { xs: 'none', sm: 'block' } }}>
               <Typography variant="body2" fontWeight="600">
-                {user?.name}
+                {user?.fullName}
               </Typography>
               <Typography variant="caption" color="text.secondary">
                 {user?.role}

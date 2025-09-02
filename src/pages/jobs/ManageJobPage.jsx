@@ -6,24 +6,26 @@ import {
 } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch,useSelector } from 'react-redux';
+import { fetchJobs ,deleteJob} from '../../Slice/JobsSlice';
 
 const ManageJobsPage = () => {
   const navigate = useNavigate();
-  const [jobs, setJobs] = useState([]);
+  const dispatch = useDispatch();
+  const { jobs2 } = useSelector((state) => state.jobs);
+  
 
   useEffect(() => {
-    const savedJobs = JSON.parse(localStorage.getItem('jobs')) || [];
-    setJobs(savedJobs);
-  }, []);
+    dispatch(fetchJobs());
+
+  }, [dispatch]);
+    
 
   const handleDelete = (id) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this job?");
-    if (!confirmDelete) return;
-
-    const updatedJobs = jobs.filter(job => job.id !== id);
-    setJobs(updatedJobs);
-    localStorage.setItem('jobs', JSON.stringify(updatedJobs));
-  };
+    dispatch(deleteJob(id));
+    alert(`job Deleted Successfully:${id}`);
+    dispatch(fetchJobs())};
+    
 
   const handleEdit = (id) => {
     navigate(`/jobs/edit/${id}`);
@@ -53,12 +55,12 @@ const ManageJobsPage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {jobs.map((job) => (
+            {jobs2.map((job) => (
               <TableRow key={job.id}>
-                <TableCell>{job.title}</TableCell>
-                <TableCell>{job.description}</TableCell>
+                <TableCell>{job.jobTitle}</TableCell>
+                <TableCell>{job.jobDescription}</TableCell>
                 <TableCell>{job.location}</TableCell>
-                <TableCell>₹{job.salaryMin} - ₹{job.salaryMax}</TableCell>
+                <TableCell>₹{job.minSalary} - ₹{job.maxSalary}</TableCell>
                 <TableCell>{job.jobType}</TableCell>
                 <TableCell>{job.experienceLevel}</TableCell>
                 <TableCell>
@@ -70,22 +72,23 @@ const ManageJobsPage = () => {
                       sx={{ mr: 0.5, mb: 0.5 }}
                     />
                   ))}
+                  
                 </TableCell>
                 <TableCell align="center">
                   <Tooltip title="Edit">
-                    <IconButton color="primary" onClick={() => handleEdit(job.id)}>
+                    <IconButton color="primary" onClick={() => handleEdit(job._id)}>
                       <Edit />
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Delete">
-                    <IconButton color="error" onClick={() => handleDelete(job.id)}>
+                    <IconButton color="error" onClick={() => handleDelete(job._id)}>
                       <Delete />
                     </IconButton>
                   </Tooltip>
                 </TableCell>
               </TableRow>
             ))}
-            {jobs.length === 0 && (
+            {jobs2.length === 0 && (
               <TableRow>
                 <TableCell colSpan={8} align="center">
                   No jobs found.

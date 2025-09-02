@@ -7,18 +7,22 @@ import App from './App.jsx';
 import { AuthProvider } from './contexts/AuthContext.jsx';
 import theme from './theme/theme.js';
 import './styles/global.css';
+import { Provider } from "react-redux";
+import store from "./Store/Store";   // simplified path
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
+    <Provider store={store}>
+      <BrowserRouter>
         <AuthProvider>
-          <App />
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <App />
+          </ThemeProvider>
         </AuthProvider>
-      </ThemeProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );

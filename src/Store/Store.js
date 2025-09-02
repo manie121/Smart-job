@@ -1,10 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import jobsReducer from "./slices/jobsSlice";
+import jobSlice from "../Slice/JobsSlice.js";
+import profileSlice from "../Slice/ProfileSlice.js";
+import registerSlice from "../Slice/RegisterSlice.js";
 
 const store = configureStore({
   reducer: {
-    jobs: jobsReducer,
-  },
+    jobs:jobSlice,
+    profile: profileSlice,
+    users:registerSlice,
+    },
 });
 
 export default store;

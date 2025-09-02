@@ -5,15 +5,19 @@ import {
 } from '@mui/material';
 import { ArrowBack, Save } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { createJob, updateJob } from '../../Slice/JobsSlice';
+
 
 const PostJobPage = ({ editMode = false, existingJob = {}, onUpdate }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [jobData, setJobData] = useState({
-    title: '',
-    description: '',
-    requirements: '',
-    salaryMin: '',
-    salaryMax: '',
+    jobTitle: '',
+    jobDescription: '',
+    qualification: '',
+    minSalary: '',
+    maxSalary: '',
     jobType: '',
     experienceLevel: '',
     location: '',
@@ -40,7 +44,7 @@ const PostJobPage = ({ editMode = false, existingJob = {}, onUpdate }) => {
       setSkillInput('');
     }
   };
-
+console.log("Data",jobData);
   const handleRemoveSkill = (skillToRemove) => {
     setJobData((prevData) => ({
       ...prevData,
@@ -51,16 +55,17 @@ const PostJobPage = ({ editMode = false, existingJob = {}, onUpdate }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (editMode) {
-      onUpdate(jobData);
+      dispatch(updateJob(jobData ));
+      if (onUpdate) onUpdate(jobData);
+      
     } else {
-      const existingJobs = JSON.parse(localStorage.getItem('jobs')) || [];
-      const newJob = { ...jobData, id: Date.now() };
-      localStorage.setItem('jobs', JSON.stringify([...existingJobs, newJob]));
+      dispatch(createJob(jobData));
+    }
       setSuccess(true);
       setTimeout(() => {
         navigate('/jobs');
       }, 2000);
-    }
+    
   };
 
   return (
@@ -93,22 +98,22 @@ const PostJobPage = ({ editMode = false, existingJob = {}, onUpdate }) => {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <TextField
-                  fullWidth label="Job Title" name="title" value={jobData.title}
+                  fullWidth label="Job Title" name="jobTitle" value={jobData.jobTitle}
                   onChange={handleInputChange} required
                 />
               </Grid>
 
               <Grid item xs={12}>
                 <TextField
-                  fullWidth multiline rows={4} label="Job Description" name="description"
-                  value={jobData.description} onChange={handleInputChange} required
+                  fullWidth multiline rows={4} label="Job Description" name="jobDescription"
+                  value={jobData.jobDescription} onChange={handleInputChange} required
                 />
               </Grid>
 
               <Grid item xs={12}>
                 <TextField
                   fullWidth multiline rows={3} label="Required Skills & Qualifications"
-                  name="requirements" value={jobData.requirements}
+                  name="qualification" value={jobData.qualification}
                   onChange={handleInputChange} required
                 />
               </Grid>
@@ -133,13 +138,13 @@ const PostJobPage = ({ editMode = false, existingJob = {}, onUpdate }) => {
 
               <Grid item xs={12} sm={6}>
                 <TextField
-                  fullWidth label="Minimum Salary" name="salaryMin" type="number"
-                  value={jobData.salaryMin} onChange={handleInputChange}
+                  fullWidth label="Minimum Salary" name="minSalary" type="number"
+                  value={jobData.minSalary} onChange={handleInputChange}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  fullWidth label="Maximum Salary" name="salaryMax" type="number"
+                  fullWidth label="Maximum Salary" name="maxSalary" type="number"
                   value={jobData.salaryMax} onChange={handleInputChange}
                 />
               </Grid>
@@ -155,6 +160,7 @@ const PostJobPage = ({ editMode = false, existingJob = {}, onUpdate }) => {
                     <MenuItem value="Part-time">Part-time</MenuItem>
                     <MenuItem value="Contract">Contract</MenuItem>
                     <MenuItem value="Internship">Internship</MenuItem>
+                    <MenuItem value="Remote">Remote</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -166,10 +172,11 @@ const PostJobPage = ({ editMode = false, existingJob = {}, onUpdate }) => {
                     name="experienceLevel" value={jobData.experienceLevel}
                     onChange={handleInputChange} label="Experience Level"
                   >
-                    <MenuItem value="Entry Level">Entry Level</MenuItem>
-                    <MenuItem value="Mid Level">Mid Level</MenuItem>
-                    <MenuItem value="Senior Level">Senior Level</MenuItem>
-                    <MenuItem value="Lead/Manager">Lead/Manager</MenuItem>
+                    <MenuItem value="Fresher">Fresher</MenuItem>
+                    <MenuItem value="Junior">Junior</MenuItem>
+                    <MenuItem value="Mid-level">Mid-level</MenuItem>
+                    <MenuItem value="Senior">Senior</MenuItem>
+                    <MenuItem value="Lead">Lead</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -180,6 +187,7 @@ const PostJobPage = ({ editMode = false, existingJob = {}, onUpdate }) => {
                   value={jobData.location} onChange={handleInputChange} required
                 />
               </Grid>
+              
 
               <Grid item xs={12}>
                 <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
